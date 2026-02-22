@@ -1,0 +1,18 @@
+{application, hecate_app_snake_dueld, [
+    {description, "Hecate Snake Duel - Snake Duel Arena Daemon"},
+    {vsn, "0.1.0"},
+    {registered, [hecate_app_snake_dueld_sup]},
+    {mod, {hecate_app_snake_dueld_app, []}},
+    {applications, [
+        kernel, stdlib, crypto,
+        cowboy, reckon_db, evoq, reckon_evoq, esqlite
+    ]},
+    {env, [
+        {data_dir, "~/.hecate/hecate-app-snake-dueld"},
+        {api_socket_name, "api.sock"},
+        {enabled, true}
+    ]},
+    {modules, []},
+    {licenses, ["Apache-2.0"]},
+    {links, [{"GitHub", "https://github.com/hecate-social/hecate-app-snake-duel"}]}
+]}.
