@@ -26,22 +26,18 @@ do_start(Params, Req) ->
     TickMs = to_integer(app_snake_dueld_api_utils:get_field(tick_ms, Params), 100),
 
     CmdParams = #{af1 => AF1, af2 => AF2, tick_ms => TickMs},
-    case start_duel_v1:new(CmdParams) of
-        {ok, Cmd} ->
-            case maybe_start_duel:dispatch(Cmd) of
-                {ok, MatchId, _Pid} ->
-                    app_snake_dueld_api_utils:json_ok(201, #{
-                        match_id => MatchId,
-                        af1 => AF1,
-                        af2 => AF2,
-                        tick_ms => TickMs,
-                        status => <<"countdown">>
-                    }, Req);
-                {error, Reason} ->
-                    app_snake_dueld_api_utils:json_error(500, Reason, Req)
-            end;
+    {ok, Cmd} = start_duel_v1:new(CmdParams),
+    case maybe_start_duel:dispatch(Cmd) of
+        {ok, MatchId, _Pid} ->
+            app_snake_dueld_api_utils:json_ok(201, #{
+                match_id => MatchId,
+                af1 => AF1,
+                af2 => AF2,
+                tick_ms => TickMs,
+                status => <<"countdown">>
+            }, Req);
         {error, Reason} ->
-            app_snake_dueld_api_utils:bad_request(Reason, Req)
+            app_snake_dueld_api_utils:json_error(500, Reason, Req)
     end.
 
 to_integer(V, _Default) when is_integer(V) -> V;

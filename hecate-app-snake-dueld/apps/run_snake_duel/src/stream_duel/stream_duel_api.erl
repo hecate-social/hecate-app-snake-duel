@@ -43,11 +43,8 @@ start_stream(MatchId, Req0, _State) ->
         Pid when is_pid(Pid) ->
             case is_process_alive(Pid) of
                 true ->
-                    case duel_proc:get_state(Pid) of
-                        {ok, StateMap} ->
-                            send_state(Req1, StateMap);
-                        _ -> ok
-                    end;
+                    {ok, StateMap} = duel_proc:get_state(Pid),
+                    send_state(Req1, StateMap);
                 false -> ok
             end
     end,

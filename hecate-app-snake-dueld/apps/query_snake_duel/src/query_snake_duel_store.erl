@@ -7,7 +7,7 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2]).
 -export([record_match/1]).
 
--record(state, {db :: reference()}).
+-record(state, {db :: esqlite3:esqlite3()}).
 
 -spec start_link() -> {ok, pid()} | {error, term()}.
 start_link() ->
@@ -98,8 +98,7 @@ terminate(_Reason, #state{db = Db}) ->
 step_until_done(Stmt) ->
     case esqlite3:step(Stmt) of
         '$done' -> ok;
-        {row, _} -> step_until_done(Stmt);
-        ok -> ok;
+        Row when is_list(Row) -> step_until_done(Stmt);
         {error, Code} ->
             logger:error("[query_snake_duel_store] SQLite step error: ~p", [Code]),
             {error, Code}

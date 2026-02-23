@@ -1,0 +1,8 @@
+{application, query_snake_duel, [
+    {description, "Snake Duel match queries (QRY)"},
+    {vsn, "0.1.0"},
+    {mod, {query_snake_duel_app, []}},
+    {applications, [kernel, stdlib, esqlite]},
+    {registered, [query_snake_duel_sup, query_snake_duel_store]},
+    {modules, []}
+]}.

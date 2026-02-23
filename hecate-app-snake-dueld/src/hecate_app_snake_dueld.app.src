@@ -5,7 +5,9 @@
     {mod, {hecate_app_snake_dueld_app, []}},
     {applications, [
         kernel, stdlib, crypto,
-        cowboy, reckon_db, evoq, reckon_evoq, esqlite
+        cowboy,
+        run_snake_duel,
+        query_snake_duel
     ]},
     {env, [
         {data_dir, "~/.hecate/hecate-app-snake-dueld"},

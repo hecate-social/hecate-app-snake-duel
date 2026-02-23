@@ -1,4 +1,4 @@
--module(hecate_app_snake_dueld_sup).
+-module(run_snake_duel_sup).
 -behaviour(supervisor).
 
 -export([start_link/0]).
@@ -11,10 +11,10 @@ init([]) ->
     SupFlags = #{strategy => one_for_one, intensity => 10, period => 60},
     ChildSpecs = [
         #{
-            id => app_snake_dueld_plugin_registrar,
-            start => {app_snake_dueld_plugin_registrar, start_link, []},
-            restart => transient,
-            type => worker
+            id => duel_proc_sup,
+            start => {duel_proc_sup, start_link, []},
+            restart => permanent,
+            type => supervisor
         }
     ],
     {ok, {SupFlags, ChildSpecs}}.
