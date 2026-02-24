@@ -1,6 +1,6 @@
 {application, hecate_app_snake_dueld, [
     {description, "Hecate Snake Duel - Snake Duel Arena Daemon"},
-    {vsn, "0.1.0"},
+    {vsn, "0.1.1"},
     {registered, [hecate_app_snake_dueld_sup]},
     {mod, {hecate_app_snake_dueld_app, []}},
     {applications, [

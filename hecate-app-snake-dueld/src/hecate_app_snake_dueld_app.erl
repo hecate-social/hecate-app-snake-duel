@@ -24,9 +24,11 @@ stop(_State) ->
 start_cowboy() ->
     SocketPath = app_snake_dueld_paths:socket_path("api.sock"),
     cleanup_socket_file(SocketPath),
+    StaticDir = static_dir(),
     Routes = [
         {"/health", app_snake_dueld_health_api, []},
         {"/manifest", app_snake_dueld_manifest_api, []},
+        {"/ui/[...]", cowboy_static, {dir, StaticDir, [{mimetypes, cow_mimetypes, all}]}},
         {"/api/arcade/snake-duel/matches", start_duel_api, []},
         {"/api/arcade/snake-duel/matches/:match_id/stream", stream_duel_api, []},
         {"/api/arcade/snake-duel/leaderboard", get_leaderboard_api, []},
@@ -58,3 +60,7 @@ cleanup_socket_file(Path) ->
             logger:warning("[hecate_app_snake_dueld] Failed to remove socket ~s: ~p", [Path, Reason]),
             ok
     end.
+
+static_dir() ->
+    PrivDir = code:priv_dir(hecate_app_snake_dueld),
+    filename:join(PrivDir, "static").
