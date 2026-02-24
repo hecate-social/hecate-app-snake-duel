@@ -16,7 +16,7 @@ RUN curl -fsSL https://s3.amazonaws.com/rebar3/rebar3 -o /usr/local/bin/rebar3 &
 COPY hecate-app-snake-dueld/rebar.config hecate-app-snake-dueld/rebar.lock* ./
 COPY hecate-app-snake-dueld/config/ config/
 COPY hecate-app-snake-dueld/src/ src/
-COPY hecate-app-snake-dueld/include/ include/
+COPY hecate-app-snake-dueld/apps/ apps/
 RUN rebar3 get-deps && rebar3 compile
 COPY --from=frontend /frontend/dist priv/static/
 RUN rebar3 as prod release
