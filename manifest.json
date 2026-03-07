@@ -17,7 +17,6 @@
     "fee_cents": 0,
     "fee_currency": "EUR",
     "node_limit": 0,
-    "oci_image": "ghcr.io/hecate-apps/hecate-app-snake-dueld",
     "min_daemon_version": "0.14.0"
   }
 }
