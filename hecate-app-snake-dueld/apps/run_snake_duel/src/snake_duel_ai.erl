@@ -114,7 +114,7 @@ should_drop_wall(#snake{body = Body, asshole_factor = AF}, Opponent, Walls, OwnT
 -spec score_direction(direction(), snake(), snake(), point(),
                       sets:set(point()), sets:set(point()), sets:set(point())) ->
     float().
-score_direction(Dir, Snake, Opponent, Food, Obstacles, OwnPoisons, OppPoisons) ->
+score_direction(Dir, Snake, Opponent, Food, Obstacles, OwnPoisons, _OppPoisons) ->
     Head = hd(Snake#snake.body),
     NewHead = apply_dir(Head, Dir),
     AF = Snake#snake.asshole_factor / 100,
@@ -124,16 +124,13 @@ score_direction(Dir, Snake, Opponent, Food, Obstacles, OwnPoisons, OppPoisons) -
         false ->
             Score0 = 0.0,
 
-            %% Avoid opponent's poison
-            Score1 = case sets:is_element(NewHead, OppPoisons) of
-                true -> Score0 - 200;
-                false -> Score0
-            end,
+            %% Blind to opponent's poison — AI can't "see" it
+            %% (spectators still see colored poison apples on screen)
 
-            %% Avoid own poison (less penalty)
+            %% Avoid own poison
             Score2 = case sets:is_element(NewHead, OwnPoisons) of
-                true -> Score1 - 80;
-                false -> Score1
+                true -> Score0 - 80;
+                false -> Score0
             end,
 
             %% Reachable space (flood fill capped at 50)

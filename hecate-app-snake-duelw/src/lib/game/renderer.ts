@@ -13,7 +13,7 @@ export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState): void
 		drawWallTile(ctx, wall, cellW, cellH);
 	}
 	for (const pa of state.poisonApples) {
-		drawPoisonApple(ctx, pa.pos, cellW, cellH);
+		drawPoisonApple(ctx, pa.pos, pa.owner, cellW, cellH);
 	}
 	drawFood(ctx, state.food, cellW, cellH);
 	drawSnake(ctx, state.snake1.body, COLORS.player1, COLORS.player1Head, cellW, cellH);
@@ -58,15 +58,18 @@ function drawFood(ctx: CanvasRenderingContext2D, food: Point, cellW: number, cel
 	ctx.restore();
 }
 
-function drawPoisonApple(ctx: CanvasRenderingContext2D, pos: Point, cellW: number, cellH: number): void {
+function drawPoisonApple(ctx: CanvasRenderingContext2D, pos: Point, owner: string, cellW: number, cellH: number): void {
 	const cx = pos[0] * cellW + cellW / 2;
 	const cy = pos[1] * cellH + cellH / 2;
 	const r = Math.min(cellW, cellH) * 0.35;
 
+	const color = owner === 'player1' ? COLORS.player1 : COLORS.player2;
+	const glow = owner === 'player1' ? COLORS.player1Head : COLORS.player2Head;
+
 	ctx.save();
-	ctx.shadowColor = COLORS.poisonGlow;
+	ctx.shadowColor = glow;
 	ctx.shadowBlur = 6;
-	ctx.fillStyle = COLORS.poison;
+	ctx.fillStyle = color;
 	ctx.beginPath();
 	ctx.arc(cx, cy, r, 0, Math.PI * 2);
 	ctx.fill();
