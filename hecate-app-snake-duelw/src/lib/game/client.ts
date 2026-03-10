@@ -11,9 +11,11 @@ interface PluginApi {
 }
 
 let pluginApi: PluginApi | null = null;
+let pluginName: string = 'hecate-app-snake-duel';
 
-export function setApi(api: PluginApi) {
+export function setApi(api: PluginApi, name?: string) {
 	pluginApi = api;
+	if (name) pluginName = name;
 }
 
 interface StartMatchResponse {
@@ -31,7 +33,7 @@ export async function startMatch(
 	af2: number,
 	tickMs: number
 ): Promise<string> {
-	const resp = await pluginApi!.post<StartMatchResponse>('/api/arcade/snake-duel/matches', {
+	const resp = await pluginApi!.post<StartMatchResponse>('/matches', {
 		af1,
 		af2,
 		tick_ms: tickMs
@@ -49,8 +51,8 @@ export async function connectMatchStream(
 	onError?: (error: string) => void
 ): Promise<() => void> {
 	const stream = connectPluginSse<Record<string, unknown>>(
-		'snake-duel',
-		`/api/arcade/snake-duel/matches/${matchId}/stream`,
+		pluginName,
+		`/matches/${matchId}/stream`,
 		(data) => {
 			try {
 				const state = daemonToGameState(data);
@@ -150,12 +152,12 @@ export interface LeaderboardData {
 /** Fetch recent match history. */
 export async function fetchHistory(limit = 20): Promise<MatchResult[]> {
 	const resp = await pluginApi!.get<{ matches: MatchResult[] }>(
-		`/api/arcade/snake-duel/history?limit=${limit}`
+		`/history?limit=${limit}`
 	);
 	return resp.matches ?? [];
 }
 
 /** Fetch aggregate leaderboard stats. */
 export async function fetchLeaderboard(): Promise<LeaderboardData> {
-	return pluginApi!.get<LeaderboardData>('/api/arcade/snake-duel/leaderboard');
+	return pluginApi!.get<LeaderboardData>('/leaderboard');
 }

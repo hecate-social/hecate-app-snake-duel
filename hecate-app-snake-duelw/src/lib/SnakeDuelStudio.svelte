@@ -11,10 +11,10 @@
 		del: <T>(path: string) => Promise<T>;
 	}
 
-	let { api }: { api: PluginApi } = $props();
+	let { api, name }: { api: PluginApi; name?: string } = $props();
 
 	onMount(() => {
-		setApi(api);
+		setApi(api, name);
 	});
 </script>
 
