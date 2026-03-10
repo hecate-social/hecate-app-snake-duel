@@ -1,7 +1,8 @@
 {
   "name": "hecate-app-snake-duel",
+  "display_name": "Snake Duel",
   "version": "0.2.0",
-  "icon": "\ud83d\udc0d",
+  "icon": "snake",
   "description": "AI vs AI Snake Duel Arena",
   "tag": "snake-duel-studio",
   "callback_module": "app_snake_duel",
@@ -21,6 +22,6 @@
     "fee_currency": "EUR",
     "node_limit": 0,
     "group_name": "GAMES",
-    "group_icon": "gamepad-2"
+    "group_icon": "video_game"
   }
 }

@@ -26,21 +26,8 @@ jobs:
         run: npm ci && npx svelte-kit sync && npm run build:lib
       - name: Copy frontend assets
         run: mkdir -p hecate-app-snake-dueld/priv/static && cp -r hecate-app-snake-duelw/dist/* hecate-app-snake-dueld/priv/static/
-      - name: Build daemon
-        working-directory: hecate-app-snake-dueld
-        run: rebar3 get-deps && rebar3 compile
-      - name: Package plugin tar.gz
-        working-directory: hecate-app-snake-dueld
-        run: |
-          mkdir -p _build/plugin/hecate-app-snake-duel/ebin
-          mkdir -p _build/plugin/hecate-app-snake-duel/priv/static
-          cp _build/default/lib/hecate_app_snake_dueld/ebin/*.beam _build/plugin/hecate-app-snake-duel/ebin/
-          for app in run_snake_duel query_snake_duel; do
-            cp _build/default/lib/$app/ebin/*.beam _build/plugin/hecate-app-snake-duel/ebin/
-          done
-          cp -r priv/static/* _build/plugin/hecate-app-snake-duel/priv/static/ 2>/dev/null || true
-          cp ../manifest.json _build/plugin/hecate-app-snake-duel/
-          cd _build/plugin && tar czf hecate-app-snake-duel.tar.gz hecate-app-snake-duel/
+      - name: Build plugin tarball
+        run: bash hecate-app-snake-dueld/scripts/package.sh
       - name: Extract version
         id: version
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
