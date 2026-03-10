@@ -23,7 +23,7 @@ jobs:
           cache-dependency-path: hecate-app-snake-duelw/package-lock.json
       - name: Build frontend
         working-directory: hecate-app-snake-duelw
-        run: npm ci && npm run build:lib
+        run: npm ci && npx svelte-kit sync && npm run build:lib
       - name: Copy frontend assets
         run: mkdir -p hecate-app-snake-dueld/priv/static && cp -r hecate-app-snake-duelw/dist/* hecate-app-snake-dueld/priv/static/
       - name: Build daemon
